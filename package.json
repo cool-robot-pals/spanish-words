@@ -1,0 +1,28 @@
+{
+  "name": "british-wourds",
+  "version": "1.0.0",
+  "description": "twitter bot",
+  "scripts": {
+    "post": "node bin/tweet.js",
+    "set": "node bin/set.js",
+    "stat": "node bin/stat.js",
+    "britishize": "node bin/britishize.js",
+    "test": "mocha",
+    "lint": "eslint"
+  },
+  "author": "Lau mayhem",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.1.1",
+    "chalk": "^2.1.0",
+    "command-line-args": "^4.0.7",
+    "dotenv": "^4.0.0",
+    "pluralize": "^7.0.0",
+    "redis": "^2.8.0",
+    "twitter": "^1.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.4.1",
+    "mocha": "^3.5.0"
+  }
+}
