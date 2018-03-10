@@ -1,12 +1,12 @@
 {
-  "name": "british-wourds",
+  "name": "spanish-words",
   "version": "1.0.0",
   "description": "twitter bot",
   "scripts": {
     "post": "node bin/tweet.js",
     "set": "node bin/set.js",
     "stat": "node bin/stat.js",
-    "britishize": "node bin/britishize.js",
+    "spanishize": "node bin/spanishize.js",
     "test": "mocha",
     "lint": "eslint"
   },

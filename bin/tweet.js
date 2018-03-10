@@ -3,10 +3,10 @@ const redis = require('redis');
 const chalk = require('chalk');
 const fs = require('fs');
 const Twitter = require('twitter');
-const makeBritish = require('./../lib/makeBritish.js');
+const makeSpanish = require('./../lib/makeSpanish.js');
 
 const words = fs.readFileSync('./bin/words.txt').toString().split('\n');
-const britishWords = words.map(makeBritish);
+const spanishWords = words.map(makeSpanish);
 
 const client = redis.createClient(process.env.REDIS_URL);
 
@@ -29,8 +29,8 @@ client.get('last', function(err, reply) {
 	console.log(`starting at ${reply}/${words.length}`);
 	let posted = false;
 	for(let i = reply; i < words.length; i++) {
-		if(britishWords[i]!==words[i]) {
-			const tweet = [`🇺🇸  ${words[i]}`,`🇬🇧  ${britishWords[i]}`].join('\n');
+		if(spanishWords[i]!==words[i]) {
+			const tweet = [`🇬🇧  ${words[i]}`,`🇪🇸  ${spanishWords[i]}`].join('\n');
 			posted = true;
 			client.set('last', parseInt(i)+1);
 			chirpy.post('statuses/update', {status: tweet}, (error) => {

@@ -1,2 +1,2 @@
-# british-wourds
-🇬🇧 turns american spelled words into very (wrong) british ones
+# spanish-wourds
+🇬🇧 turns american spelled words into very (wrong) spanish ones
