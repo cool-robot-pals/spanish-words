@@ -52,4 +52,5 @@ client.get('last', function(err, i) {
 		console.error(chalk.red('✘ Ran out of words'));
 		client.set('last', 0, redis.print);
 	}
+	client.quit();
 });
