@@ -1,12 +1,18 @@
 require('dotenv').config();
 const redis = require('redis');
 const chalk = require('chalk');
+const shuffle = require('shuffle-array');
 const fs = require('fs');
 const Twitter = require('twitter');
 const makeSpanish = require('./../lib/makeSpanish.js');
 
-const words = fs.readFileSync('./bin/words.txt').toString().split('\n');
-const spanishWords = words.map(makeSpanish);
+const adjectives = fs.readFileSync('./bin/adjectives.txt').toString().split('\n');
+const words = fs.readFileSync('./bin/words.txt').toString().split('\n').map(_=>(
+	[
+		(Math.random()>.25)?shuffle(adjectives)[0]:null,
+		_
+	].filter(_=>_!==null)
+))
 
 const client = redis.createClient(process.env.REDIS_URL);
 
@@ -21,32 +27,28 @@ client.on('error', function (err) {
 	console.log('Error ' + err);
 });
 
-client.get('last', function(err, reply) {
+client.get('last', function(err, i) {
 	if(err) {
 		console.error(err);
 		client.set('last', 0, redis.print);
 	}
-	console.log(`starting at ${reply}/${words.length}`);
+	console.log(`starting at ${i}/${words.length}`);
 	let posted = false;
-	for(let i = reply; i < words.length; i++) {
-		if(spanishWords[i]!==words[i]) {
-			const tweet = [`🇬🇧  ${words[i]}`,`🇪🇸  ${spanishWords[i]}`].join('\n');
-			posted = true;
-			client.set('last', parseInt(i)+1);
-			chirpy.post('statuses/update', {status: tweet}, (error) => {
-				if(error) {
-					console.error(chalk.red('✘ Post failed'));
-					console.error(error);
-					throw error;
-				}
-				else {
-					console.info(chalk.green(`✔ Posted: ${tweet}`));
-				}
-			});
-			break;
-		}
-	}
-	if(!posted) {
+	if(words[i]) {
+		const tweet = [`🇬🇧  ${words[i].join(' ')}`,`🇪🇸  ${makeSpanish(words[i]).join(' ')}`].join('\n');
+		posted = true;
+		client.set('last', parseInt(i)+1);
+		chirpy.post('statuses/update', {status: tweet}, (error) => {
+			if(error) {
+				console.error(chalk.red('✘ Post failed'));
+				console.error(error);
+				throw error;
+			}
+			else {
+				console.info(chalk.green(`✔ Posted: ${tweet}`));
+			}
+		});
+	} else {
 		console.error(chalk.red('✘ Ran out of words'));
 		client.set('last', 0, redis.print);
 	}

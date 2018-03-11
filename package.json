@@ -19,6 +19,7 @@
     "dotenv": "^4.0.0",
     "pluralize": "^7.0.0",
     "redis": "^2.8.0",
+    "shuffle-array": "^1.0.1",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
